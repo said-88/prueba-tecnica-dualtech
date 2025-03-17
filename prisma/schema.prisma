@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Cliente {
+  clienteId BigInt @id @default(autoincrement())
+  nombre    String
+  identidad String @db.NVarChar(255)
+  ordenes   Orden[]
+}
+
+model Orden {
+  ordenId   BigInt @id @default(autoincrement())
+  clienteId BigInt
+  impuesto  Decimal @db.Decimal(10, 2)
+  subtotal  Decimal @db.Decimal(10, 2)
+  total     Decimal @db.Decimal(10, 2)
+  cliente   Cliente @relation(fields: [clienteId], references: [clienteId])
+  detalles  DetalleOrden[]
+}
+
+model DetalleOrden {
+  detalleOrdenId BigInt @id @default(autoincrement())
+  ordenId        BigInt
+  productoId     BigInt
+  cantidad       Decimal @db.Decimal(10, 2)
+  impuesto       Decimal @db.Decimal(10, 2)
+  subtotal       Decimal @db.Decimal(10, 2)
+  total          Decimal @db.Decimal(10, 2)
+  orden          Orden @relation(fields: [ordenId], references: [ordenId])
+  producto       Producto @relation(fields: [productoId], references: [productoId])
+}
+
+model Producto {
+  productoId BigInt @id @default(autoincrement())
+  nombre     String @db.NVarChar(255)
+  descripcion String? @db.NVarChar(255)
+  precio     Decimal @db.Decimal(10, 2)
+  existencia BigInt
+  detalles   DetalleOrden[]
+}
+
+

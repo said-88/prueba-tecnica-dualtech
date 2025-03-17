@@ -1,0 +1,28 @@
+{
+  "name": "prueba-tecnica-dualtech",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "build": "bun build --outdir=dist",
+    "start": "bun run build && bun dist/index.ts",
+    "migrate": "prisma migrate dev",
+    "studio": "prisma studio",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down -v"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.10",
+    "prisma": "^6.5.0",
+    "typescript": "^5.8.2"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.5.0",
+    "express": "^4.21.2"
+  }
+}
